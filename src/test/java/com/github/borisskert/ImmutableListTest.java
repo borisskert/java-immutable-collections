@@ -324,4 +324,20 @@ class ImmutableListTest {
     public void shouldProduceSameHashCodeAsArrayList() throws Exception {
         assertThat(abcImmutableList.hashCode(), is(equalTo(abcArrayList.hashCode())));
     }
+
+    @Test
+    public void shouldCreateListFromArray() throws Exception {
+        assertThat(ImmutableList.of(new String[] {"A", "B", "C"}), is(equalTo(abcImmutableList)));
+    }
+
+    @Test
+    public void shouldCreateListFromCollection() throws Exception {
+        assertThat(ImmutableList.of(abcArrayList), is(equalTo(abcImmutableList)));
+    }
+
+    @Test
+    public void shouldCreateListFromIterable() throws Exception {
+        Iterable<String> iterable = () -> abcArrayList.iterator();
+        assertThat(ImmutableList.of(iterable), is(equalTo(abcImmutableList)));
+    }
 }
