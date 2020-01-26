@@ -180,6 +180,7 @@ public class ImmutableList<E> implements List<E> {
      * Factory methods
      **************************************************************************************************************** */
 
+    @SuppressWarnings("unchecked")
     public static <T> List<T> empty() {
         return EMPTY_IMMUTABLE_LIST;
     }
