@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.stream.Stream;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -151,7 +153,7 @@ class ImmutableListTest {
             assertThat(e.getMessage(), is(equalTo("You must not remove elements from this list")));
         }
     }
-    
+
     @Test
     public void shouldNotAllowToClear() throws Exception {
         try {
@@ -161,7 +163,7 @@ class ImmutableListTest {
             assertThat(e.getMessage(), is(equalTo("You must not clear this list")));
         }
     }
-    
+
     @Test
     public void shouldGetOneElement() throws Exception {
         assertThat(abcImmutableList.get(0), is(equalTo("A")));
@@ -309,18 +311,27 @@ class ImmutableListTest {
 
     @Test
     public void shouldCreateListFromArray() throws Exception {
-        assertThat(ImmutableList.of(new String[] {"A", "B", "C"}), is(equalTo(abcImmutableList)));
+        List<String> immutableList = ImmutableList.of(new String[]{"A", "B", "C"});
+
+        assertThat(immutableList, is(equalTo(abcImmutableList)));
+        assertThat(immutableList, instanceOf(ImmutableList.class));
     }
 
     @Test
     public void shouldCreateListFromCollection() throws Exception {
-        assertThat(ImmutableList.of(abcArrayList), is(equalTo(abcImmutableList)));
+        List<String> immutableList = ImmutableList.of(abcArrayList);
+
+        assertThat(immutableList, is(equalTo(abcImmutableList)));
+        assertThat(immutableList, instanceOf(ImmutableList.class));
     }
 
     @Test
     public void shouldCreateListFromIterable() throws Exception {
         Iterable<String> iterable = () -> abcArrayList.iterator();
-        assertThat(ImmutableList.of(iterable), is(equalTo(abcImmutableList)));
+        List<String> immutableList = ImmutableList.of(iterable);
+
+        assertThat(immutableList, is(equalTo(abcImmutableList)));
+        assertThat(immutableList, instanceOf(ImmutableList.class));
     }
 
     @Test
@@ -369,5 +380,14 @@ class ImmutableListTest {
         } catch (NullPointerException e) {
             assertThat(e.getMessage(), is(equalTo("Parameter 'items' must not be null")));
         }
+    }
+
+    @Test
+    public void shouldCollectStreams() throws Exception {
+        List<String> collectedImmutableList = Stream.of("A", "B", "C")
+                .collect(ImmutableList.collect());
+
+        assertThat(collectedImmutableList, is(equalTo(abcImmutableList)));
+        assertThat(collectedImmutableList, instanceOf(ImmutableList.class));
     }
 }
