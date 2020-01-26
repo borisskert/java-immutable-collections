@@ -3,8 +3,10 @@ package com.github.borisskert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -258,5 +260,73 @@ class ImmutableListTest {
         assertThat(listWithThreeElements.subList(0, 2), is(equalTo(ImmutableList.of("A", "B"))));
         assertThat(listWithThreeElements.subList(1, 2), is(equalTo(ImmutableList.of("B"))));
         assertThat(listWithThreeElements.subList(0, 1), is(equalTo(ImmutableList.of("A"))));
+    }
+
+    @Test
+    public void shouldEqualsSameList() throws Exception {
+        assertThat(Objects.equals(ImmutableList.empty(), ImmutableList.empty()), is(equalTo(true)));
+
+        List<String> list = new ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+
+        assertThat(Objects.equals(ImmutableList.of(list), ImmutableList.of(list)), is(equalTo(true)));
+    }
+
+    @Test
+    public void shouldEqualsListContainingSameElements() throws Exception {
+        assertThat(
+                Objects.equals(
+                        ImmutableList.of("A", "B", "C"),
+                        ImmutableList.of("A", "B", "C")
+                ),
+                is(equalTo(true))
+        );
+    }
+
+    @Test
+    public void shouldNotEqualsListContainingDifferentElements() throws Exception {
+        assertThat(
+                Objects.equals(
+                        ImmutableList.of("A", "B", "C", "D"),
+                        ImmutableList.of("A", "B", "C")
+                ),
+                is(equalTo(false))
+        );
+    }
+
+    @Test
+    public void shouldNotEqualsListContainingSameElementsInDifferentOrder() throws Exception {
+        assertThat(
+                Objects.equals(
+                        ImmutableList.of("B", "C", "A"),
+                        ImmutableList.of("A", "B", "C")
+                ),
+                is(equalTo(false))
+        );
+    }
+
+    @Test
+    public void shouldEqualArrayListWithSameElements() throws Exception {
+        List<String> list = new ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+
+        assertThat(
+                Objects.equals(
+                        ImmutableList.of("A", "B", "C"),
+                        list)
+                , is(equalTo(true))
+        );
+    }
+
+    @Test
+    public void shouldNotEqualNull() throws Exception {
+        assertThat(
+                listWithThreeElements.equals(null),
+                is(equalTo(false))
+        );
     }
 }

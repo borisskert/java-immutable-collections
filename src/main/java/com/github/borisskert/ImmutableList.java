@@ -105,6 +105,37 @@ public class ImmutableList<E> implements List<E> {
         return protectedList.subList(fromIndex, toIndex);
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other)
+            return true;
+        if (other == null)
+            return false;
+        if (!(other instanceof List))
+            return false;
+
+        List<?> otherList = (List<?>) other;
+        if (this.size() != ((List<?>) other).size()) {
+            return false;
+        }
+
+        ListIterator<E> thisIterator = listIterator();
+        ListIterator<?> otherIterator = otherList.listIterator();
+
+        while (thisIterator.hasNext() && otherIterator.hasNext()) {
+            E thisElement = thisIterator.next();
+            Object otherElement = otherIterator.next();
+
+            if (!(Objects.equals(thisElement, otherElement)))
+                return false;
+        }
+        return !(thisIterator.hasNext() || otherIterator.hasNext());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(protectedList);
+    }
 
     public static <T> List<T> empty() {
         return EMPTY_IMMUTABLE_LIST;
