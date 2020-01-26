@@ -149,6 +149,19 @@ public class ImmutableList<E> implements List<E> {
             return false;
         }
 
+        return containEqualItems(otherList);
+    }
+
+    @Override
+    public int hashCode() {
+        return protectedList.hashCode();
+    }
+
+    /* *****************************************************************************************************************
+     * Private methods
+     **************************************************************************************************************** */
+
+    private boolean containEqualItems(List<?> otherList) {
         ListIterator<E> thisIterator = listIterator();
         ListIterator<?> otherIterator = otherList.listIterator();
 
@@ -161,11 +174,6 @@ public class ImmutableList<E> implements List<E> {
         }
 
         return !(thisIterator.hasNext() || otherIterator.hasNext());
-    }
-
-    @Override
-    public int hashCode() {
-        return protectedList.hashCode();
     }
 
     /* *****************************************************************************************************************
