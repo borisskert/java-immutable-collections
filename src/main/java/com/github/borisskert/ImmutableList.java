@@ -4,12 +4,13 @@ import java.util.*;
 
 /**
  * Implements an unmodifiable {@link List}
+ *
  * @param <E> the type of the elements
  */
 public class ImmutableList<E> implements List<E> {
     /* *****************************************************************************************************************
-    * Static fields
-    ***************************************************************************************************************** */
+     * Static fields
+     ***************************************************************************************************************** */
 
     private static final ImmutableList EMPTY_IMMUTABLE_LIST = new ImmutableList<>(
             new ArrayList<>(0)
@@ -45,8 +46,24 @@ public class ImmutableList<E> implements List<E> {
         return protectedList.contains(o);
     }
 
-    public Iterator<E> iterator() {
-        return protectedList.iterator();
+    public boolean containsAll(Collection<?> c) {
+        return protectedList.containsAll(c);
+    }
+
+    public E get(int index) {
+        return protectedList.get(index);
+    }
+
+    public int indexOf(Object o) {
+        return protectedList.indexOf(o);
+    }
+
+    public int lastIndexOf(Object o) {
+        return protectedList.lastIndexOf(o);
+    }
+
+    public List<E> subList(int fromIndex, int toIndex) {
+        return protectedList.subList(fromIndex, toIndex);
     }
 
     public Object[] toArray() {
@@ -57,16 +74,24 @@ public class ImmutableList<E> implements List<E> {
         return protectedList.toArray(a);
     }
 
+    public Iterator<E> iterator() {
+        return protectedList.iterator();
+    }
+
+    public ListIterator<E> listIterator() {
+        return protectedList.listIterator();
+    }
+
+    public ListIterator<E> listIterator(int index) {
+        return protectedList.listIterator(index);
+    }
+
     public boolean add(E t) {
         throw new IllegalStateException("You must not add an element to this list");
     }
 
     public boolean remove(Object o) {
         throw new IllegalStateException("You must not remove an element from this list");
-    }
-
-    public boolean containsAll(Collection<?> c) {
-        return protectedList.containsAll(c);
     }
 
     public boolean addAll(Collection<? extends E> c) {
@@ -89,10 +114,6 @@ public class ImmutableList<E> implements List<E> {
         throw new IllegalStateException("You must not clear this list");
     }
 
-    public E get(int index) {
-        return protectedList.get(index);
-    }
-
     public E set(int index, E element) {
         throw new IllegalStateException("You must not set an element in this list");
     }
@@ -103,26 +124,6 @@ public class ImmutableList<E> implements List<E> {
 
     public E remove(int index) {
         throw new IllegalStateException("You must not remove an element from this list");
-    }
-
-    public int indexOf(Object o) {
-        return protectedList.indexOf(o);
-    }
-
-    public int lastIndexOf(Object o) {
-        return protectedList.lastIndexOf(o);
-    }
-
-    public ListIterator<E> listIterator() {
-        return protectedList.listIterator();
-    }
-
-    public ListIterator<E> listIterator(int index) {
-        return protectedList.listIterator(index);
-    }
-
-    public List<E> subList(int fromIndex, int toIndex) {
-        return protectedList.subList(fromIndex, toIndex);
     }
 
     /* *****************************************************************************************************************
@@ -139,7 +140,7 @@ public class ImmutableList<E> implements List<E> {
             return false;
 
         List<?> otherList = (List<?>) other;
-        if (this.size() != ((List<?>) other).size()) {
+        if (this.size() != otherList.size()) {
             return false;
         }
 
@@ -153,6 +154,7 @@ public class ImmutableList<E> implements List<E> {
             if (!(Objects.equals(thisElement, otherElement)))
                 return false;
         }
+
         return !(thisIterator.hasNext() || otherIterator.hasNext());
     }
 
