@@ -87,8 +87,6 @@ class ImmutableListTest {
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not add an element to this list")));
-        } catch (Throwable e) {
-            fail("Should throw IllegalStateException");
         }
     }
 
@@ -99,8 +97,6 @@ class ImmutableListTest {
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not remove an element from this list")));
-        } catch (Throwable e) {
-            fail("Should throw IllegalStateException");
         }
     }
 
@@ -123,8 +119,6 @@ class ImmutableListTest {
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not add elements to this list")));
-        } catch (Throwable e) {
-            fail("Should throw IllegalStateException");
         }
     }
 
@@ -135,8 +129,6 @@ class ImmutableListTest {
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not add elements to this list")));
-        } catch (Throwable e) {
-            fail("Should throw IllegalStateException");
         }
     }
 
@@ -147,8 +139,6 @@ class ImmutableListTest {
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not remove elements from this list")));
-        } catch (Throwable e) {
-            fail("Should throw IllegalStateException");
         }
     }
 
@@ -159,8 +149,6 @@ class ImmutableListTest {
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not remove elements from this list")));
-        } catch (Throwable e) {
-            fail("Should throw IllegalStateException");
         }
     }
     
@@ -171,8 +159,6 @@ class ImmutableListTest {
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not clear this list")));
-        } catch (Throwable e) {
-            fail("Should throw IllegalStateException");
         }
     }
     
@@ -190,8 +176,6 @@ class ImmutableListTest {
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not set an element in this list")));
-        } catch (Throwable e) {
-            fail("Should throw IllegalStateException");
         }
     }
 
@@ -202,8 +186,6 @@ class ImmutableListTest {
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not remove an element from this list")));
-        } catch (Throwable e) {
-            fail("Should throw IllegalStateException");
         }
     }
 
@@ -339,5 +321,53 @@ class ImmutableListTest {
     public void shouldCreateListFromIterable() throws Exception {
         Iterable<String> iterable = () -> abcArrayList.iterator();
         assertThat(ImmutableList.of(iterable), is(equalTo(abcImmutableList)));
+    }
+
+    @Test
+    public void shouldNotAllowNullElementAsArgumentForFromElementFactory() throws Exception {
+        String nullElement = null;
+
+        try {
+            ImmutableList.of(nullElement);
+            fail("Should throw NullPointerException");
+        } catch (NullPointerException e) {
+            assertThat(e.getMessage(), is(equalTo("Parameter 'item' must not be null")));
+        }
+    }
+
+    @Test
+    public void shouldNotAllowNullElementAsArgumentForFromArrayFactory() throws Exception {
+        String[] nullArray = null;
+
+        try {
+            ImmutableList.of(nullArray);
+            fail("Should throw NullPointerException");
+        } catch (NullPointerException e) {
+            assertThat(e.getMessage(), is(equalTo("Parameter 'items' must not be null")));
+        }
+    }
+
+    @Test
+    public void shouldNotAllowNullElementAsArgumentForFromCollectionFactory() throws Exception {
+        Collection<String> nullCollection = null;
+
+        try {
+            ImmutableList.of(nullCollection);
+            fail("Should throw NullPointerException");
+        } catch (NullPointerException e) {
+            assertThat(e.getMessage(), is(equalTo("Parameter 'items' must not be null")));
+        }
+    }
+
+    @Test
+    public void shouldNotAllowNullElementAsArgumentForFromIterableFactory() throws Exception {
+        Iterable<String> nullIterable = null;
+
+        try {
+            ImmutableList.of(nullIterable);
+            fail("Should throw NullPointerException");
+        } catch (NullPointerException e) {
+            assertThat(e.getMessage(), is(equalTo("Parameter 'items' must not be null")));
+        }
     }
 }

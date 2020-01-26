@@ -172,26 +172,40 @@ public class ImmutableList<E> implements List<E> {
     }
 
     @SafeVarargs
-    public static <T> List<T> of(final T... others) {
-        // TODO null check
+    public static <T> List<T> of(T item, final T... others) {
+        Objects.requireNonNull(item, "Parameter 'item' must not be null");
 
-        List<T> arrayList = new ArrayList<>(others.length);
+        List<T> arrayList = new ArrayList<>(others.length + 1);
+        arrayList.add(item);
         Collections.addAll(arrayList, others);
 
         return new ImmutableList<>(arrayList);
     }
 
-    public static <T> List<T> of(Collection<T> collection) {
-        List<T> arrayList = new ArrayList<>(collection.size());
-        arrayList.addAll(collection);
+    public static <T> List<T> of(T[] items) {
+        Objects.requireNonNull(items, "Parameter 'items' must not be null");
+
+        List<T> arrayList = new ArrayList<>(items.length);
+        Collections.addAll(arrayList, items);
 
         return new ImmutableList<>(arrayList);
     }
 
-    public static <T> List<T> of(Iterable<T> iterable) {
+    public static <T> List<T> of(Collection<T> items) {
+        Objects.requireNonNull(items, "Parameter 'items' must not be null");
+
+        List<T> arrayList = new ArrayList<>(items.size());
+        arrayList.addAll(items);
+
+        return new ImmutableList<>(arrayList);
+    }
+
+    public static <T> List<T> of(Iterable<T> items) {
+        Objects.requireNonNull(items, "Parameter 'items' must not be null");
+
         List<T> arrayList = new ArrayList<>();
 
-        for (T item : iterable) {
+        for (T item : items) {
             arrayList.add(item);
         }
 
