@@ -2,16 +2,36 @@ package com.github.borisskert;
 
 import java.util.*;
 
+/**
+ * Implements an unmodifiable {@link List}
+ * @param <E> the type of the elements
+ */
 public class ImmutableList<E> implements List<E> {
+    /* *****************************************************************************************************************
+    * Static fields
+    ***************************************************************************************************************** */
+
     private static final ImmutableList EMPTY_IMMUTABLE_LIST = new ImmutableList<>(
             new ArrayList<>(0)
     );
 
+    /* *****************************************************************************************************************
+     * Instance fields
+     **************************************************************************************************************** */
+
     private final List<E> protectedList;
+
+    /* *****************************************************************************************************************
+     * Constructor(s)
+     **************************************************************************************************************** */
 
     private ImmutableList(List<E> protectedList) {
         this.protectedList = protectedList;
     }
+
+    /* *****************************************************************************************************************
+     * Implementation of List<T> interface
+     **************************************************************************************************************** */
 
     public int size() {
         return protectedList.size();
@@ -105,6 +125,10 @@ public class ImmutableList<E> implements List<E> {
         return protectedList.subList(fromIndex, toIndex);
     }
 
+    /* *****************************************************************************************************************
+     * Overrides of Object
+     **************************************************************************************************************** */
+
     @Override
     public boolean equals(Object other) {
         if (this == other)
@@ -136,6 +160,10 @@ public class ImmutableList<E> implements List<E> {
     public int hashCode() {
         return protectedList.hashCode();
     }
+
+    /* *****************************************************************************************************************
+     * Factory methods
+     **************************************************************************************************************** */
 
     public static <T> List<T> empty() {
         return EMPTY_IMMUTABLE_LIST;
