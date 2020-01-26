@@ -3,10 +3,7 @@ package com.github.borisskert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -16,27 +13,33 @@ import static org.junit.jupiter.api.Assertions.fail;
 class ImmutableListTest {
 
     private List<String> emptyList;
-    private List<String> listWithThreeElements;
+    private List<String> abcImmutableList;
     private List<String> listWithThreeDuplicateElements;
+    private List<String> abcArrayList;
 
     @BeforeEach
     public void setup() throws Exception {
         emptyList = ImmutableList.empty();
-        listWithThreeElements = ImmutableList.of("A", "B", "C");
+        abcImmutableList = ImmutableList.of("A", "B", "C");
         listWithThreeDuplicateElements = ImmutableList.of("A", "B", "C", "A", "B", "C");
+
+        abcArrayList = new ArrayList<>();
+        abcArrayList.add("A");
+        abcArrayList.add("B");
+        abcArrayList.add("C");
     }
 
     @Test
     public void shouldHaveSpecificSize() throws Exception {
         assertThat(emptyList.size(), is(equalTo(0)));
-        assertThat(listWithThreeElements.size(), is(equalTo(3)));
+        assertThat(abcImmutableList.size(), is(equalTo(3)));
         assertThat(listWithThreeDuplicateElements.size(), is(equalTo(6)));
     }
 
     @Test
     public void shouldIndicateIfEmpty() throws Exception {
         assertThat(emptyList.isEmpty(), is(true));
-        assertThat(listWithThreeElements.isEmpty(), is(false));
+        assertThat(abcImmutableList.isEmpty(), is(false));
         assertThat(listWithThreeDuplicateElements.isEmpty(), is(false));
     }
 
@@ -47,13 +50,13 @@ class ImmutableListTest {
         assertThat(emptyList.contains("C"), is(false));
 
 
-        assertThat(listWithThreeElements.contains("A"), is(true));
-        assertThat(listWithThreeElements.contains("B"), is(true));
-        assertThat(listWithThreeElements.contains("C"), is(true));
+        assertThat(abcImmutableList.contains("A"), is(true));
+        assertThat(abcImmutableList.contains("B"), is(true));
+        assertThat(abcImmutableList.contains("C"), is(true));
 
-        assertThat(listWithThreeElements.contains("X"), is(false));
-        assertThat(listWithThreeElements.contains("Y"), is(false));
-        assertThat(listWithThreeElements.contains("Z"), is(false));
+        assertThat(abcImmutableList.contains("X"), is(false));
+        assertThat(abcImmutableList.contains("Y"), is(false));
+        assertThat(abcImmutableList.contains("Z"), is(false));
 
 
         assertThat(listWithThreeDuplicateElements.contains("A"), is(true));
@@ -67,20 +70,20 @@ class ImmutableListTest {
 
     @Test
     public void shouldReturnArray() throws Exception {
-        Object[] asArray = listWithThreeElements.toArray();
+        Object[] asArray = abcImmutableList.toArray();
         assertThat(asArray, is(equalTo(new Object[]{"A", "B", "C"})));
     }
 
     @Test
     public void shouldReturnTypedArray() throws Exception {
-        String[] asArray = listWithThreeElements.toArray(new String[0]);
+        String[] asArray = abcImmutableList.toArray(new String[0]);
         assertThat(asArray, is(equalTo(new String[]{"A", "B", "C"})));
     }
 
     @Test
     public void shouldNotAllowToAddElement() throws Exception {
         try {
-            listWithThreeElements.add("D");
+            abcImmutableList.add("D");
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not add an element to this list")));
@@ -92,7 +95,7 @@ class ImmutableListTest {
     @Test
     public void shouldNotAllowToRemoveElement() throws Exception {
         try {
-            listWithThreeElements.remove("A");
+            abcImmutableList.remove("A");
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not remove an element from this list")));
@@ -103,20 +106,20 @@ class ImmutableListTest {
 
     @Test
     public void shouldContainAllElements() throws Exception {
-        boolean containsAll = listWithThreeElements.containsAll(ImmutableList.of("A", "B"));
+        boolean containsAll = abcImmutableList.containsAll(ImmutableList.of("A", "B"));
         assertThat(containsAll, is(true));
     }
 
     @Test
     public void shouldNotContainAllElements() throws Exception {
-        boolean containsAll = listWithThreeElements.containsAll(ImmutableList.of("A", "D"));
+        boolean containsAll = abcImmutableList.containsAll(ImmutableList.of("A", "D"));
         assertThat(containsAll, is(false));
     }
 
     @Test
     public void shouldNotAllowToAddAllElements() throws Exception {
         try {
-            listWithThreeElements.addAll(ImmutableList.of("D", "E"));
+            abcImmutableList.addAll(ImmutableList.of("D", "E"));
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not add elements to this list")));
@@ -128,7 +131,7 @@ class ImmutableListTest {
     @Test
     public void shouldNotAllowToInsertElements() throws Exception {
         try {
-            listWithThreeElements.addAll(0, ImmutableList.of("D", "E"));
+            abcImmutableList.addAll(0, ImmutableList.of("D", "E"));
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not add elements to this list")));
@@ -140,7 +143,7 @@ class ImmutableListTest {
     @Test
     public void shouldNotAllowToRemoveAllElements() throws Exception {
         try {
-            listWithThreeElements.removeAll(ImmutableList.of("A", "B"));
+            abcImmutableList.removeAll(ImmutableList.of("A", "B"));
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not remove elements from this list")));
@@ -152,7 +155,7 @@ class ImmutableListTest {
     @Test
     public void shouldNotAllowToRetainElements() throws Exception {
         try {
-            listWithThreeElements.retainAll(ImmutableList.of("A", "B"));
+            abcImmutableList.retainAll(ImmutableList.of("A", "B"));
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not remove elements from this list")));
@@ -164,7 +167,7 @@ class ImmutableListTest {
     @Test
     public void shouldNotAllowToClear() throws Exception {
         try {
-            listWithThreeElements.clear();
+            abcImmutableList.clear();
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not clear this list")));
@@ -175,15 +178,15 @@ class ImmutableListTest {
     
     @Test
     public void shouldGetOneElement() throws Exception {
-        assertThat(listWithThreeElements.get(0), is(equalTo("A")));
-        assertThat(listWithThreeElements.get(1), is(equalTo("B")));
-        assertThat(listWithThreeElements.get(2), is(equalTo("C")));
+        assertThat(abcImmutableList.get(0), is(equalTo("A")));
+        assertThat(abcImmutableList.get(1), is(equalTo("B")));
+        assertThat(abcImmutableList.get(2), is(equalTo("C")));
     }
 
     @Test
     public void shouldNotAllowSetElement() throws Exception {
         try {
-            listWithThreeElements.set(0, "D");
+            abcImmutableList.set(0, "D");
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not set an element in this list")));
@@ -195,7 +198,7 @@ class ImmutableListTest {
     @Test
     public void shouldNotAllowRemoveElementByIndex() throws Exception {
         try {
-            listWithThreeElements.remove(0);
+            abcImmutableList.remove(0);
             fail("Should throw IllegalStateException");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(equalTo("You must not remove an element from this list")));
@@ -206,23 +209,21 @@ class ImmutableListTest {
 
     @Test
     public void shouldGetIndexOfAnElement() throws Exception {
-        assertThat(listWithThreeElements.indexOf("A"), is(equalTo(0)));
-        assertThat(listWithThreeElements.indexOf("B"), is(equalTo(1)));
-        assertThat(listWithThreeElements.indexOf("C"), is(equalTo(2)));
+        assertThat(abcImmutableList.indexOf("A"), is(equalTo(0)));
+        assertThat(abcImmutableList.indexOf("B"), is(equalTo(1)));
+        assertThat(abcImmutableList.indexOf("C"), is(equalTo(2)));
     }
 
     @Test
     public void shouldGetLastIndexOfAnElement() throws Exception {
-        assertThat(listWithThreeElements.lastIndexOf("A"), is(equalTo(0)));
-        assertThat(listWithThreeElements.lastIndexOf("B"), is(equalTo(1)));
-        assertThat(listWithThreeElements.lastIndexOf("C"), is(equalTo(2)));
-
-
+        assertThat(abcImmutableList.lastIndexOf("A"), is(equalTo(0)));
+        assertThat(abcImmutableList.lastIndexOf("B"), is(equalTo(1)));
+        assertThat(abcImmutableList.lastIndexOf("C"), is(equalTo(2)));
     }
 
     @Test
     public void shouldProvideIterator() throws Exception {
-        Iterator<String> iterator = listWithThreeElements.iterator();
+        Iterator<String> iterator = abcImmutableList.iterator();
 
         assertThat(iterator.next(), is(equalTo("A")));
         assertThat(iterator.next(), is(equalTo("B")));
@@ -233,7 +234,7 @@ class ImmutableListTest {
 
     @Test
     public void shouldProvideListIterator() throws Exception {
-        Iterator<String> iterator = listWithThreeElements.listIterator();
+        Iterator<String> iterator = abcImmutableList.listIterator();
 
         assertThat(iterator.next(), is(equalTo("A")));
         assertThat(iterator.next(), is(equalTo("B")));
@@ -244,7 +245,7 @@ class ImmutableListTest {
 
     @Test
     public void shouldProvideListIteratorWithSpecifiedIndex() throws Exception {
-        Iterator<String> iterator = listWithThreeElements.listIterator(1);
+        Iterator<String> iterator = abcImmutableList.listIterator(1);
 
         assertThat(iterator.next(), is(equalTo("B")));
         assertThat(iterator.next(), is(equalTo("C")));
@@ -254,24 +255,18 @@ class ImmutableListTest {
 
     @Test
     public void shouldProvideSubLists() throws Exception {
-        assertThat(listWithThreeElements.subList(0, 3), is(equalTo(ImmutableList.of("A", "B", "C"))));
-        assertThat(listWithThreeElements.subList(1, 3), is(equalTo(ImmutableList.of("B", "C"))));
-        assertThat(listWithThreeElements.subList(2, 3), is(equalTo(ImmutableList.of("C"))));
-        assertThat(listWithThreeElements.subList(0, 2), is(equalTo(ImmutableList.of("A", "B"))));
-        assertThat(listWithThreeElements.subList(1, 2), is(equalTo(ImmutableList.of("B"))));
-        assertThat(listWithThreeElements.subList(0, 1), is(equalTo(ImmutableList.of("A"))));
+        assertThat(abcImmutableList.subList(0, 3), is(equalTo(ImmutableList.of("A", "B", "C"))));
+        assertThat(abcImmutableList.subList(1, 3), is(equalTo(ImmutableList.of("B", "C"))));
+        assertThat(abcImmutableList.subList(2, 3), is(equalTo(ImmutableList.of("C"))));
+        assertThat(abcImmutableList.subList(0, 2), is(equalTo(ImmutableList.of("A", "B"))));
+        assertThat(abcImmutableList.subList(1, 2), is(equalTo(ImmutableList.of("B"))));
+        assertThat(abcImmutableList.subList(0, 1), is(equalTo(ImmutableList.of("A"))));
     }
 
     @Test
     public void shouldEqualsSameList() throws Exception {
         assertThat(Objects.equals(ImmutableList.empty(), ImmutableList.empty()), is(equalTo(true)));
-
-        List<String> list = new ArrayList<>();
-        list.add("A");
-        list.add("B");
-        list.add("C");
-
-        assertThat(Objects.equals(ImmutableList.of(list), ImmutableList.of(list)), is(equalTo(true)));
+        assertThat(Objects.equals(ImmutableList.of(abcArrayList), ImmutableList.of(abcArrayList)), is(equalTo(true)));
     }
 
     @Test
@@ -309,15 +304,10 @@ class ImmutableListTest {
 
     @Test
     public void shouldEqualArrayListWithSameElements() throws Exception {
-        List<String> list = new ArrayList<>();
-        list.add("A");
-        list.add("B");
-        list.add("C");
-
         assertThat(
                 Objects.equals(
                         ImmutableList.of("A", "B", "C"),
-                        list)
+                        abcArrayList)
                 , is(equalTo(true))
         );
     }
@@ -325,8 +315,13 @@ class ImmutableListTest {
     @Test
     public void shouldNotEqualNull() throws Exception {
         assertThat(
-                listWithThreeElements.equals(null),
+                abcImmutableList.equals(null),
                 is(equalTo(false))
         );
+    }
+
+    @Test
+    public void shouldProduceSameHashCodeAsArrayList() throws Exception {
+        assertThat(abcImmutableList.hashCode(), is(equalTo(abcArrayList.hashCode())));
     }
 }

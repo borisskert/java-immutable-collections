@@ -134,7 +134,7 @@ public class ImmutableList<E> implements List<E> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(protectedList);
+        return protectedList.hashCode();
     }
 
     public static <T> List<T> empty() {
