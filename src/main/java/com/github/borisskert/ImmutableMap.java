@@ -1,9 +1,6 @@
 package com.github.borisskert;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -101,6 +98,59 @@ public class ImmutableMap<K, V> implements Map<K, V> {
     @Override
     public void clear() {
         throw new IllegalStateException("You must not clear this map");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+
+        if(getClass() == o.getClass()) {
+            ImmutableMap<?, ?> that = (ImmutableMap<?, ?>) o;
+            return Objects.equals(protectedMap, that.protectedMap);
+        }
+
+        return equalsMap(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return protectedMap.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return protectedMap.toString();
+    }
+
+    /* *****************************************************************************************************************
+     * Private methods
+     **************************************************************************************************************** */
+
+    /**
+     * Similar implementation to {@link AbstractMap#equals(Object)}
+     */
+    private boolean equalsMap(Object other) {
+        if (!(other instanceof Map))
+            return false;
+
+        Map<?,?> otherMap = (Map<?,?>) other;
+        if (otherMap.size() != size())
+            return false;
+
+        for (Entry<K, V> entry : entrySet()) {
+            K key = entry.getKey();
+            V value = entry.getValue();
+            if (value == null) {
+                if (!(otherMap.get(key) == null && otherMap.containsKey(key)))
+                    return false;
+            } else {
+                if (!value.equals(otherMap.get(key)))
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     /* *****************************************************************************************************************

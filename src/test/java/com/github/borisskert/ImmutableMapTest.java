@@ -9,21 +9,31 @@ import java.util.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class ImmutableMapTest {
 
     private Map<String, String> emptyMap;
+    private Map<String, String> emptyHashMap;
     private Map<String, String> abcMap;
+    private Map<String, String> abcHashMap;
 
     @BeforeEach
     public void setup() throws Exception {
         emptyMap = ImmutableMap.empty();
+        emptyHashMap = new HashMap<>();
+
         abcMap = ImmutableMap.of(
                 ImmutableMap.entry("1", "A"),
                 ImmutableMap.entry("2", "B"),
                 ImmutableMap.entry("3", "C")
         );
+
+        abcHashMap = new HashMap<>();
+        abcHashMap.put("1", "A");
+        abcHashMap.put("2", "B");
+        abcHashMap.put("3", "C");
     }
 
     @Test
@@ -222,6 +232,64 @@ class ImmutableMapTest {
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(IsEqual.equalTo("You must not change the value of this entry")));
         }
+    }
+
+    @Test
+    public void shouldEqualsSameMap() throws Exception {
+        assertThat(abcMap, is(equalTo(abcMap)));
+        assertThat(emptyMap, is(equalTo(emptyMap)));
+    }
+
+    @Test
+    public void shouldEqualsMapWithEqualEntries() throws Exception {
+        Map<String, String> anotherMap = ImmutableMap.of(
+                ImmutableMap.entry("1", "A"),
+                ImmutableMap.entry("2", "B"),
+                ImmutableMap.entry("3", "C")
+        );
+
+        assertThat(abcMap, is(equalTo(anotherMap)));
+        assertThat(anotherMap, is(equalTo(abcMap)));
+    }
+
+    @Test
+    public void shouldEqualsHashMapWithEqualEntries() throws Exception {
+        assertThat(abcMap, is(equalTo(abcHashMap)));
+        assertThat(abcHashMap, is(equalTo(abcMap)));
+    }
+
+    @Test
+    public void shouldNotEqualsMapWithEqualEntries() throws Exception {
+        Map<String, String> map = ImmutableMap.of(
+                ImmutableMap.entry("A", "1"),
+                ImmutableMap.entry("B", "2"),
+                ImmutableMap.entry("C", "3")
+        );
+
+        assertThat(map, is(not(equalTo(abcMap))));
+    }
+
+    @Test
+    public void shouldNotEqualsHashMapWithDifferentEntries() throws Exception {
+        Map<String, String> map = new HashMap<>();
+        map.put("A", "1");
+        map.put("B", "2");
+        map.put("C", "3");
+
+        assertThat(map, is(not(equalTo(abcMap))));
+        assertThat(abcMap, is(not(equalTo(map))));
+    }
+
+    @Test
+    public void shouldProduceSameHashCode() throws Exception {
+        assertThat(abcMap.hashCode(), is(equalTo(abcHashMap.hashCode())));
+        assertThat(emptyMap.hashCode(), is(equalTo(emptyHashMap.hashCode())));
+    }
+
+    @Test
+    public void shouldProvideStringRepresentation() throws Exception {
+        assertThat(abcMap.toString(), is(equalTo("{1=A, 2=B, 3=C}")));
+        assertThat(emptyMap.toString(), is(equalTo("{}")));
     }
 
     private <T extends Comparable<? super T>> Iterator<T> sortCollection(Collection<T> collection) {
