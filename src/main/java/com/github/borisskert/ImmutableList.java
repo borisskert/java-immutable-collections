@@ -13,8 +13,9 @@ import java.util.stream.Collector;
  * @param <E> the type of the elements
  */
 public class ImmutableList<E> implements List<E> {
+
     /* *****************************************************************************************************************
-     * Static fields
+     * Constants
      ***************************************************************************************************************** */
 
     private static final ImmutableList EMPTY_IMMUTABLE_LIST = new ImmutableList<>(
@@ -22,7 +23,7 @@ public class ImmutableList<E> implements List<E> {
     );
 
     /* *****************************************************************************************************************
-     * Instance fields
+     * Readonly fields
      **************************************************************************************************************** */
 
     private final List<E> protectedList;
