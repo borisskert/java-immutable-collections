@@ -200,10 +200,26 @@ public class ImmutableMap<K, V> implements Map<K, V> {
      * @param value the value of the {@link java.util.Map.Entry}
      * @param <K>   the key type
      * @param <V>   the value type
-     * @return a new instance of an {@link ImmutableEntry}
+     * @return a new anonymous instance of an {@link Map.Entry}
      */
     public static <K, V> Map.Entry<K, V> entry(K key, V value) {
-        return new ImmutableEntry<>(key, value);
+        return new Map.Entry<>() {
+
+            @Override
+            public K getKey() {
+                return key;
+            }
+
+            @Override
+            public V getValue() {
+                return value;
+            }
+
+            @Override
+            public V setValue(V value) {
+                throw new IllegalStateException("You must not change the value of this entry");
+            }
+        };
     }
 
     /* *****************************************************************************************************************
@@ -211,32 +227,52 @@ public class ImmutableMap<K, V> implements Map<K, V> {
      **************************************************************************************************************** */
 
     private static class ImmutableEntry<K, V> implements Map.Entry<K, V> {
-        private final K key;
-        private final V value;
-
-        private ImmutableEntry(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
+        private final Map.Entry<K, V> entry;
 
         private ImmutableEntry(Map.Entry<K, V> entry) {
-            this.key = entry.getKey();
-            this.value = entry.getValue();
+            this.entry = entry;
         }
 
         @Override
         public K getKey() {
-            return key;
+            return entry.getKey();
         }
 
         @Override
         public V getValue() {
-            return value;
+            return entry.getValue();
         }
 
         @Override
         public V setValue(V value) {
             throw new IllegalStateException("You must not change the value of this entry");
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null) return false;
+
+            if(getClass() == o.getClass()) {
+                ImmutableEntry<?, ?> that = (ImmutableEntry<?, ?>) o;
+                return this.entry.equals(that.entry);
+            }
+
+            if(o instanceof Map.Entry) {
+                return this.entry.equals(o);
+            }
+
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return entry.hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return entry.toString();
         }
     }
 }

@@ -168,6 +168,12 @@ class ImmutableMapTest {
     }
 
     @Test
+    public void shouldProvideEqualKeySet() throws Exception {
+        assertThat(abcMap.keySet(), is(equalTo(abcHashMap.keySet())));
+        assertThat(emptyMap.keySet(), is(equalTo(emptyHashMap.keySet())));
+    }
+
+    @Test
     public void shouldProvideValues() throws Exception {
         Collection<String> values = abcMap.values();
         assertThat(values, is(hasSize(3)));
@@ -232,6 +238,12 @@ class ImmutableMapTest {
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(IsEqual.equalTo("You must not change the value of this entry")));
         }
+    }
+
+    @Test
+    public void shouldProvideEqualEntries() throws Exception {
+        assertThat(abcMap.entrySet(), is(equalTo(abcHashMap.entrySet())));
+        assertThat(emptyMap.entrySet(), is(equalTo(emptyHashMap.entrySet())));
     }
 
     @Test
