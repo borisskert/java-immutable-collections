@@ -304,6 +304,22 @@ class ImmutableMapTest {
         assertThat(emptyMap.toString(), is(equalTo("{}")));
     }
 
+    @Test
+    public void shouldProvideCollector() throws Exception {
+        Map<String, String> collectedMap = abcMap.entrySet()
+                .stream()
+                .collect(
+                        ImmutableMap.collect(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue
+                        )
+                );
+
+        assertThat(collectedMap, is(instanceOf(ImmutableMap.class)));
+        assertThat(collectedMap, is(not(sameInstance(abcMap))));
+        assertThat(collectedMap, is(equalTo(abcMap)));
+    }
+
     private <T extends Comparable<? super T>> Iterator<T> sortCollection(Collection<T> collection) {
         List<T> keysAsList = new ArrayList<>(collection);
         Collections.sort(keysAsList);

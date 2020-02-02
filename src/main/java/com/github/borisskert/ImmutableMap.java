@@ -1,7 +1,13 @@
 package com.github.borisskert;
 
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Implements an Immutable {@link Map}
@@ -105,7 +111,7 @@ public class ImmutableMap<K, V> implements Map<K, V> {
         if (this == o) return true;
         if (o == null) return false;
 
-        if(getClass() == o.getClass()) {
+        if (getClass() == o.getClass()) {
             ImmutableMap<?, ?> that = (ImmutableMap<?, ?>) o;
             return Objects.equals(protectedMap, that.protectedMap);
         }
@@ -134,7 +140,7 @@ public class ImmutableMap<K, V> implements Map<K, V> {
         if (!(other instanceof Map))
             return false;
 
-        Map<?,?> otherMap = (Map<?,?>) other;
+        Map<?, ?> otherMap = (Map<?, ?>) other;
         if (otherMap.size() != size())
             return false;
 
@@ -222,6 +228,23 @@ public class ImmutableMap<K, V> implements Map<K, V> {
         };
     }
 
+    /**
+     * Provides a {@link Collector} to collect {@link Stream}s
+     *
+     * @param keyMapper   the mapper {@link Function} to get the key for each element
+     * @param valueMapper the mapper {@link Function} to get the value for each element
+     * @param <T>         the type of the {@link Stream} elements
+     * @param <K>         the key type
+     * @param <V>         the value type
+     * @return a new {@link Collector} instance
+     */
+    public static <T, K, V> Collector<T, ?, Map<K, V>> collect(
+            Function<? super T, ? extends K> keyMapper,
+            Function<? super T, ? extends V> valueMapper
+    ) {
+        return new ImmutableMapCollector<>(keyMapper, valueMapper);
+    }
+
     /* *****************************************************************************************************************
      * Inner class(es)
      **************************************************************************************************************** */
@@ -253,12 +276,12 @@ public class ImmutableMap<K, V> implements Map<K, V> {
             if (this == o) return true;
             if (o == null) return false;
 
-            if(getClass() == o.getClass()) {
+            if (getClass() == o.getClass()) {
                 ImmutableEntry<?, ?> that = (ImmutableEntry<?, ?>) o;
                 return this.entry.equals(that.entry);
             }
 
-            if(o instanceof Map.Entry) {
+            if (o instanceof Map.Entry) {
                 return this.entry.equals(o);
             }
 
@@ -273,6 +296,65 @@ public class ImmutableMap<K, V> implements Map<K, V> {
         @Override
         public String toString() {
             return entry.toString();
+        }
+    }
+
+    private static class ImmutableMapCollector<T, K, V> implements Collector<T, Map<K, V>, Map<K, V>> {
+
+        private final Function<? super T, ? extends K> keyMapper;
+        private final Function<? super T, ? extends V> valueMapper;
+
+        private ImmutableMapCollector(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper) {
+            this.keyMapper = keyMapper;
+            this.valueMapper = valueMapper;
+        }
+
+        @Override
+        public Supplier<Map<K, V>> supplier() {
+            return HashMap::new;
+        }
+
+        @Override
+        public BiConsumer<Map<K, V>, T> accumulator() {
+            return (map, element) -> {
+                K key = keyMapper.apply(element);
+                V value = Objects.requireNonNull(valueMapper.apply(element));
+                V previousValue = map.putIfAbsent(key, value);
+                if (previousValue != null)
+                    throw new IllegalStateException(
+                            String.format(
+                                    "Duplicate key %s (attempted merging values %s and %s)", key, previousValue, value
+                            )
+                    );
+                ;
+            };
+        }
+
+        @Override
+        public BinaryOperator<Map<K, V>> combiner() {
+            return (map, otherMap) -> {
+                for (Map.Entry<K, V> entry : otherMap.entrySet()) {
+                    K key = entry.getKey();
+                    V value = Objects.requireNonNull(entry.getValue());
+                    V previousValue = map.putIfAbsent(key, value);
+                    if (previousValue != null) throw new IllegalStateException(
+                            String.format(
+                                    "Duplicate key %s (attempted merging values %s and %s)", key, previousValue, value
+                            )
+                    );
+                }
+                return map;
+            };
+        }
+
+        @Override
+        public Function<Map<K, V>, Map<K, V>> finisher() {
+            return ImmutableMap::new;
+        }
+
+        @Override
+        public Set<Characteristics> characteristics() {
+            return Collections.emptySet();
         }
     }
 }
