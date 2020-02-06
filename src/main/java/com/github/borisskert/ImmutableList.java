@@ -93,43 +93,43 @@ public class ImmutableList<E> implements List<E> {
     }
 
     public boolean add(E t) {
-        throw new IllegalStateException("You must not add an element to this list");
+        throw new UnsupportedOperationException("You must not add an element to this list");
     }
 
     public boolean remove(Object o) {
-        throw new IllegalStateException("You must not remove an element from this list");
+        throw new UnsupportedOperationException("You must not remove an element from this list");
     }
 
     public boolean addAll(Collection<? extends E> c) {
-        throw new IllegalStateException("You must not add elements to this list");
+        throw new UnsupportedOperationException("You must not add elements to this list");
     }
 
     public boolean addAll(int index, Collection<? extends E> c) {
-        throw new IllegalStateException("You must not add elements to this list");
+        throw new UnsupportedOperationException("You must not add elements to this list");
     }
 
     public boolean removeAll(Collection<?> c) {
-        throw new IllegalStateException("You must not remove elements from this list");
+        throw new UnsupportedOperationException("You must not remove elements from this list");
     }
 
     public boolean retainAll(Collection<?> c) {
-        throw new IllegalStateException("You must not remove elements from this list");
+        throw new UnsupportedOperationException("You must not remove elements from this list");
     }
 
     public void clear() {
-        throw new IllegalStateException("You must not clear this list");
+        throw new UnsupportedOperationException("You must not clear this list");
     }
 
     public E set(int index, E element) {
-        throw new IllegalStateException("You must not set an element in this list");
+        throw new UnsupportedOperationException("You must not set an element in this list");
     }
 
     public void add(int index, E element) {
-        throw new IllegalStateException("You must not add elements to this list");
+        throw new UnsupportedOperationException("You must not add elements to this list");
     }
 
     public E remove(int index) {
-        throw new IllegalStateException("You must not remove an element from this list");
+        throw new UnsupportedOperationException("You must not remove an element from this list");
     }
 
     /* *****************************************************************************************************************

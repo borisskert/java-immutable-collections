@@ -88,22 +88,22 @@ public class ImmutableMap<K, V> implements Map<K, V> {
 
     @Override
     public V put(K key, V value) {
-        throw new IllegalStateException("You must not put an element to this map");
+        throw new UnsupportedOperationException("You must not put an element to this map");
     }
 
     @Override
     public V remove(Object key) {
-        throw new IllegalStateException("You must not remove an element from this map");
+        throw new UnsupportedOperationException("You must not remove an element from this map");
     }
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        throw new IllegalStateException("You must not put a elements to this map");
+        throw new UnsupportedOperationException("You must not put a elements to this map");
     }
 
     @Override
     public void clear() {
-        throw new IllegalStateException("You must not clear this map");
+        throw new UnsupportedOperationException("You must not clear this map");
     }
 
     @Override
@@ -223,7 +223,7 @@ public class ImmutableMap<K, V> implements Map<K, V> {
 
             @Override
             public V setValue(V value) {
-                throw new IllegalStateException("You must not change the value of this entry");
+                throw new UnsupportedOperationException("You must not change the value of this entry");
             }
         };
     }
@@ -268,7 +268,7 @@ public class ImmutableMap<K, V> implements Map<K, V> {
 
         @Override
         public V setValue(V value) {
-            throw new IllegalStateException("You must not change the value of this entry");
+            throw new UnsupportedOperationException("You must not change the value of this entry");
         }
 
         @Override
@@ -321,7 +321,7 @@ public class ImmutableMap<K, V> implements Map<K, V> {
                 V value = Objects.requireNonNull(valueMapper.apply(element));
                 V previousValue = map.putIfAbsent(key, value);
                 if (previousValue != null)
-                    throw new IllegalStateException(
+                    throw new UnsupportedOperationException(
                             String.format(
                                     "Duplicate key %s (attempted merging values %s and %s)", key, previousValue, value
                             )
@@ -337,7 +337,7 @@ public class ImmutableMap<K, V> implements Map<K, V> {
                     K key = entry.getKey();
                     V value = Objects.requireNonNull(entry.getValue());
                     V previousValue = map.putIfAbsent(key, value);
-                    if (previousValue != null) throw new IllegalStateException(
+                    if (previousValue != null) throw new UnsupportedOperationException(
                             String.format(
                                     "Duplicate key %s (attempted merging values %s and %s)", key, previousValue, value
                             )

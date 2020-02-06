@@ -86,8 +86,8 @@ class ImmutableListTest {
     public void shouldNotAllowToAddElement() throws Exception {
         try {
             abcImmutableList.add("D");
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(equalTo("You must not add an element to this list")));
         }
     }
@@ -96,8 +96,8 @@ class ImmutableListTest {
     public void shouldNotAllowToRemoveElement() throws Exception {
         try {
             abcImmutableList.remove("A");
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(equalTo("You must not remove an element from this list")));
         }
     }
@@ -118,8 +118,8 @@ class ImmutableListTest {
     public void shouldNotAllowToAddAllElements() throws Exception {
         try {
             abcImmutableList.addAll(ImmutableList.of("D", "E"));
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(equalTo("You must not add elements to this list")));
         }
     }
@@ -128,8 +128,8 @@ class ImmutableListTest {
     public void shouldNotAllowToInsertElements() throws Exception {
         try {
             abcImmutableList.addAll(0, ImmutableList.of("D", "E"));
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(equalTo("You must not add elements to this list")));
         }
     }
@@ -138,8 +138,8 @@ class ImmutableListTest {
     public void shouldNotAllowToRemoveAllElements() throws Exception {
         try {
             abcImmutableList.removeAll(ImmutableList.of("A", "B"));
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(equalTo("You must not remove elements from this list")));
         }
     }
@@ -148,8 +148,8 @@ class ImmutableListTest {
     public void shouldNotAllowToRetainElements() throws Exception {
         try {
             abcImmutableList.retainAll(ImmutableList.of("A", "B"));
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(equalTo("You must not remove elements from this list")));
         }
     }
@@ -158,8 +158,8 @@ class ImmutableListTest {
     public void shouldNotAllowToClear() throws Exception {
         try {
             abcImmutableList.clear();
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(equalTo("You must not clear this list")));
         }
     }
@@ -175,8 +175,8 @@ class ImmutableListTest {
     public void shouldNotAllowSetElement() throws Exception {
         try {
             abcImmutableList.set(0, "D");
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(equalTo("You must not set an element in this list")));
         }
     }
@@ -185,8 +185,8 @@ class ImmutableListTest {
     public void shouldNotAllowRemoveElementByIndex() throws Exception {
         try {
             abcImmutableList.remove(0);
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(equalTo("You must not remove an element from this list")));
         }
     }

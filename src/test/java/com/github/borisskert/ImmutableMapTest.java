@@ -112,8 +112,8 @@ class ImmutableMapTest {
     public void shouldNotAllowToPutElement() throws Exception {
         try {
             abcMap.put("A", "1");
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(IsEqual.equalTo("You must not put an element to this map")));
         }
     }
@@ -122,8 +122,8 @@ class ImmutableMapTest {
     public void shouldNotAllowToRemoveElement() throws Exception {
         try {
             abcMap.remove("1");
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(IsEqual.equalTo("You must not remove an element from this map")));
         }
     }
@@ -135,8 +135,8 @@ class ImmutableMapTest {
 
         try {
             abcMap.putAll(anotherMap);
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(IsEqual.equalTo("You must not put a elements to this map")));
         }
     }
@@ -145,8 +145,8 @@ class ImmutableMapTest {
     public void shouldNotAllowToClear() throws Exception {
         try {
             abcMap.clear();
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(IsEqual.equalTo("You must not clear this map")));
         }
     }
@@ -218,24 +218,24 @@ class ImmutableMapTest {
         Map.Entry<String, String> entry = sortedEntries.next();
         try {
             entry.setValue("D");
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(IsEqual.equalTo("You must not change the value of this entry")));
         }
 
         entry = sortedEntries.next();
         try {
             entry.setValue("D");
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(IsEqual.equalTo("You must not change the value of this entry")));
         }
 
         entry = sortedEntries.next();
         try {
             entry.setValue("D");
-            fail("Should throw IllegalStateException");
-        } catch (IllegalStateException e) {
+            fail("Should throw UnsupportedOperationException");
+        } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), is(IsEqual.equalTo("You must not change the value of this entry")));
         }
     }
