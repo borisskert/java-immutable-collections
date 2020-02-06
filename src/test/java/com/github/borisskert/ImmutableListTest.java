@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -389,5 +390,14 @@ class ImmutableListTest {
 
         assertThat(collectedImmutableList, is(equalTo(abcImmutableList)));
         assertThat(collectedImmutableList, instanceOf(ImmutableList.class));
+    }
+
+    @Test
+    public void shouldNotAllowManipulateListViaOriginalList() throws Exception {
+        List<String> immutableList = ImmutableList.of(abcArrayList);
+
+        abcArrayList.add("D");
+
+        assertThat(immutableList, hasSize(3));
     }
 }

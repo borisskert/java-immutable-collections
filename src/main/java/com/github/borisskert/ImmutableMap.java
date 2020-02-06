@@ -175,6 +175,25 @@ public class ImmutableMap<K, V> implements Map<K, V> {
     }
 
     /**
+     * Creates an immutable {@link Map} with the same entries as the specified {@link Map}.
+     *
+     * @param map the specified {@link Map} which contains the entries.
+     * @param <K> the key type
+     * @param <V> the value type
+     * @return a new instance of an {@link ImmutableMap} containing the same items as the specified {@link Map}
+     */
+    public static <K, V> Map<K, V> of(Map<K, V> map) {
+        return map.entrySet()
+                .stream()
+                .collect(
+                        collect(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue
+                        )
+                );
+    }
+
+    /**
      * Creates an immutable {@link Map} with the specified entries.
      *
      * @param entry        the first {@link Map.Entry}, which must not be null
@@ -326,7 +345,6 @@ public class ImmutableMap<K, V> implements Map<K, V> {
                                     "Duplicate key %s (attempted merging values %s and %s)", key, previousValue, value
                             )
                     );
-                ;
             };
         }
 

@@ -247,13 +247,13 @@ class ImmutableMapTest {
     }
 
     @Test
-    public void shouldEqualsSameMap() throws Exception {
+    public void shouldEqualSameMap() throws Exception {
         assertThat(abcMap, is(equalTo(abcMap)));
         assertThat(emptyMap, is(equalTo(emptyMap)));
     }
 
     @Test
-    public void shouldEqualsMapWithEqualEntries() throws Exception {
+    public void shouldEqualMapWithEqualEntries() throws Exception {
         Map<String, String> anotherMap = ImmutableMap.of(
                 ImmutableMap.entry("1", "A"),
                 ImmutableMap.entry("2", "B"),
@@ -262,6 +262,17 @@ class ImmutableMapTest {
 
         assertThat(abcMap, is(equalTo(anotherMap)));
         assertThat(anotherMap, is(equalTo(abcMap)));
+    }
+
+    @Test
+    public void shouldProduceImmutableMapFromMap() throws Exception {
+        Map<String, String> anotherMap = ImmutableMap.of(
+                abcHashMap
+        );
+
+        assertThat(anotherMap, instanceOf(ImmutableMap.class));
+        assertThat(anotherMap, is(equalTo(abcMap)));
+        assertThat(abcMap, is(equalTo(anotherMap)));
     }
 
     @Test
@@ -318,6 +329,15 @@ class ImmutableMapTest {
         assertThat(collectedMap, is(instanceOf(ImmutableMap.class)));
         assertThat(collectedMap, is(not(sameInstance(abcMap))));
         assertThat(collectedMap, is(equalTo(abcMap)));
+    }
+
+    @Test
+    public void shouldNotAllowModificationViaOriginalMap() throws Exception {
+        Map<String, String> immutableMap = ImmutableMap.of(abcHashMap);
+
+        abcHashMap.put("4", "D");
+
+        assertThat(immutableMap.size(), is(equalTo(3)));
     }
 
     private <T extends Comparable<? super T>> Iterator<T> sortCollection(Collection<T> collection) {
