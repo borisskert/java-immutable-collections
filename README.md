@@ -28,7 +28,7 @@ For Streams you can collect the items:
             .collect(ImmutableList.collect());
 ```
 
-#### ImmutableMap
+### ImmutableMap
 
 Implements a decorator for Maps which is immutable.
 
@@ -54,4 +54,36 @@ For Streams you can collect the items:
                             <valueMapperFunction>
                     )
             );
+```
+
+### ImmutableSet
+
+Implements a decorator for Sets which is immutable.
+
+#### Creation
+
+Use on of these factory methods:
+
+```
+    Set<String> fromSingleItems = ImmutableSet.of("A", "B", "C");
+    Set<String> fromArray = ImmutableSet.of(new String[]{"A", "B", "C"});    
+```
+
+From `Collection`, `Iterable` or `Iterator`:
+
+```
+    Collection<String> collection = ImmutableList.of("A", "B", "C");
+    Set<String> fromCollection = ImmutableSet.of(collection);
+
+    Iterable<String> iterable = ImmutableList.of("A", "B", "C");
+    Set<String> fromIterable = ImmutableSet.of(iterable);
+
+    Set<String> fromIterator = ImmutableSet.of(collection.iterator());
+```
+
+For Streams you can collect the items:
+
+```
+    Set<String> collectedFromStream = Stream.of("A", "B", "C")
+            .collect(ImmutableSet.collect());
 ```
