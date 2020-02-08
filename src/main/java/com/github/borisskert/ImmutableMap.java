@@ -83,7 +83,7 @@ public class ImmutableMap<K, V> implements Map<K, V> {
         return protectedMap.entrySet()
                 .stream()
                 .map(ImmutableEntry::new)
-                .collect(Collectors.toUnmodifiableSet());
+                .collect(Collectors.toSet());
     }
 
     @Override
