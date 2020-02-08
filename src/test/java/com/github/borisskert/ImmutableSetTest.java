@@ -203,6 +203,24 @@ class ImmutableSetTest {
     }
 
     @Test
+    public void shouldProduceFromIterator() throws Exception {
+        Iterator<String> iterator = ImmutableList.of("A", "B", "C").iterator();
+        Set<String> producedSet = ImmutableSet.of(iterator);
+
+        assertThat(producedSet, is(equalTo(abcSet)));
+        assertThat(producedSet, is(instanceOf(ImmutableSet.class)));
+    }
+
+    @Test
+    public void shouldProduceFromIterable() throws Exception {
+        Iterable<String> iterable = ImmutableList.of("A", "B", "C");
+        Set<String> producedSet = ImmutableSet.of(iterable);
+
+        assertThat(producedSet, is(equalTo(abcSet)));
+        assertThat(producedSet, is(instanceOf(ImmutableSet.class)));
+    }
+
+    @Test
     public void shouldEqualImmutableSetWithSameElements() throws Exception {
         Set<String> another = ImmutableSet.of("A", "B", "C");
 

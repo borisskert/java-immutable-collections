@@ -126,7 +126,30 @@ public class ImmutableSet<E> implements Set<E> {
     }
 
     public static <T> Set<T> of(Collection<T> items) {
-        HashSet<T> hashSet = new HashSet<>(items);
+        HashSet<T> hashSet = new HashSet<>(items.size());
+        hashSet.addAll(items);
+
+        return new ImmutableSet<>(hashSet);
+    }
+
+    public static <T> Set<T> of(Iterator<T> items) {
+        HashSet<T> hashSet = new HashSet<>();
+
+        while(items.hasNext()) {
+            T item = items.next();
+            hashSet.add(item);
+        }
+
+        return new ImmutableSet<>(hashSet);
+    }
+
+    public static <T> Set<T> of(Iterable<T> items) {
+        HashSet<T> hashSet = new HashSet<>();
+
+        for (T item : items) {
+            hashSet.add(item);
+        }
+
         return new ImmutableSet<>(hashSet);
     }
 }
