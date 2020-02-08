@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -215,6 +216,16 @@ class ImmutableSetTest {
     public void shouldProduceFromIterable() throws Exception {
         Iterable<String> iterable = ImmutableList.of("A", "B", "C");
         Set<String> producedSet = ImmutableSet.of(iterable);
+
+        assertThat(producedSet, is(equalTo(abcSet)));
+        assertThat(producedSet, is(instanceOf(ImmutableSet.class)));
+    }
+
+    @Test
+    public void shouldProduceByCollector() throws Exception {
+        Stream<String> stream = ImmutableList.of("A", "B", "C").stream();
+
+        Set<String> producedSet = stream.collect(ImmutableSet.collect());
 
         assertThat(producedSet, is(equalTo(abcSet)));
         assertThat(producedSet, is(instanceOf(ImmutableSet.class)));
