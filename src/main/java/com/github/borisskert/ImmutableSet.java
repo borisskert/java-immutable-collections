@@ -6,7 +6,13 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Stream;
 
+/**
+ * Implements an unmodifiable {@link Set}
+ *
+ * @param <E> the item type
+ */
 public class ImmutableSet<E> implements Set<E> {
 
     /* *****************************************************************************************************************
@@ -133,10 +139,24 @@ public class ImmutableSet<E> implements Set<E> {
      * Factory methods
      **************************************************************************************************************** */
 
+    /**
+     * Returns an empty instance of an {@link ImmutableSet}
+     *
+     * @param <T> the key type
+     * @return an empty instance (not a new one)
+     */
     public static <T> Set<T> empty() {
         return EMPTY_IMMUTABLE_SET;
     }
 
+    /**
+     * Creates an immutable {@link Set} containing the specified items
+     *
+     * @param item   the first item
+     * @param others the other items
+     * @param <T>    the item type
+     * @return a new instance of an {@link Set} containing the specified items
+     */
     @SafeVarargs
     public static <T> Set<T> of(T item, final T... others) {
         Objects.requireNonNull(item, "Parameter 'item' must not be null");
@@ -148,6 +168,13 @@ public class ImmutableSet<E> implements Set<E> {
         return new ImmutableSet<>(hashSet);
     }
 
+    /**
+     * Creates an immutable {@link Set} containing the items of the specified array
+     *
+     * @param items the specified array
+     * @param <T>   the item type
+     * @return a new instance of an {@link Set} containing the specified items
+     */
     public static <T> Set<T> of(T[] items) {
         HashSet<T> hashSet = new HashSet<>(items.length);
         hashSet.addAll(Arrays.asList(items));
@@ -155,6 +182,13 @@ public class ImmutableSet<E> implements Set<E> {
         return new ImmutableSet<>(hashSet);
     }
 
+    /**
+     * Creates an immutable {@link Set} containing the items of the specified {@link Collection}
+     *
+     * @param items the specified {@link Collection}
+     * @param <T>   the item type
+     * @return a new instance of an {@link Set} containing the specified items
+     */
     public static <T> Set<T> of(Collection<T> items) {
         HashSet<T> hashSet = new HashSet<>(items.size());
         hashSet.addAll(items);
@@ -162,6 +196,13 @@ public class ImmutableSet<E> implements Set<E> {
         return new ImmutableSet<>(hashSet);
     }
 
+    /**
+     * Creates an immutable {@link Set} containing the items of the specified {@link Iterator}
+     *
+     * @param items the specified {@link Iterator}
+     * @param <T>   the item type
+     * @return a new instance of an {@link Set} containing the specified items
+     */
     public static <T> Set<T> of(Iterator<T> items) {
         HashSet<T> hashSet = new HashSet<>();
 
@@ -173,6 +214,13 @@ public class ImmutableSet<E> implements Set<E> {
         return new ImmutableSet<>(hashSet);
     }
 
+    /**
+     * Creates an immutable {@link Set} containing the items of the specified {@link Iterable}
+     *
+     * @param items the specified {@link Iterable}
+     * @param <T>   the item type
+     * @return a new instance of an {@link Set} containing the specified items
+     */
     public static <T> Set<T> of(Iterable<T> items) {
         HashSet<T> hashSet = new HashSet<>();
 
@@ -183,6 +231,12 @@ public class ImmutableSet<E> implements Set<E> {
         return new ImmutableSet<>(hashSet);
     }
 
+    /**
+     * Provides a {@link Collector} to collect {@link Stream}s to a {@link Set}
+     *
+     * @param <T> the item type
+     * @return a new {@link Collector} instance
+     */
     public static <T> Collector<T, Set<T>, Set<T>> collect() {
         return new ImmutableSetCollector<>();
     }

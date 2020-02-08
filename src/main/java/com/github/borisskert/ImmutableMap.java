@@ -248,7 +248,7 @@ public class ImmutableMap<K, V> implements Map<K, V> {
     }
 
     /**
-     * Provides a {@link Collector} to collect {@link Stream}s
+     * Provides a {@link Collector} to collect {@link Stream}s to a {@link Map}
      *
      * @param keyMapper   the mapper {@link Function} to get the key for each element
      * @param valueMapper the mapper {@link Function} to get the value for each element
