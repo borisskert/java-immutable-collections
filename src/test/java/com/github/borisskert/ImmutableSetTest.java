@@ -5,6 +5,7 @@ import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -176,11 +177,29 @@ class ImmutableSetTest {
     @Test
     public void shouldNotAllowCreateImmutableSetWithNullElement() throws Exception {
         try {
-            ImmutableSet.of(null);
+            ImmutableSet.of((String) null);
             fail("Should throw NullPointerException");
         } catch (NullPointerException e) {
             assertThat(e.getMessage(), is(IsEqual.equalTo("Parameter 'item' must not be null")));
         }
+    }
+
+    @Test
+    public void shouldProduceSetFromArray() throws Exception {
+        String[] array = new String[]{"A", "B", "C"};
+        Set<String> producedSet = ImmutableSet.of(array);
+
+        assertThat(producedSet, is(equalTo(abcSet)));
+        assertThat(producedSet, is(instanceOf(ImmutableSet.class)));
+    }
+
+    @Test
+    public void shouldProduceFromCollection() throws Exception {
+        Collection<String> collection = ImmutableList.of("A", "B", "C");
+        Set<String> producedSet = ImmutableSet.of(collection);
+
+        assertThat(producedSet, is(equalTo(abcSet)));
+        assertThat(producedSet, is(instanceOf(ImmutableSet.class)));
     }
 
     @Test
