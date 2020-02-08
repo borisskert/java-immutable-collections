@@ -9,11 +9,29 @@ import java.util.stream.Collector;
 
 public class ImmutableSet<E> implements Set<E> {
 
+    /* *****************************************************************************************************************
+     * Constants
+     **************************************************************************************************************** */
+
+    private static final ImmutableSet EMPTY_IMMUTABLE_SET = new ImmutableSet<>(new HashSet<>(0));
+
+    /* *****************************************************************************************************************
+     * Readonly fields
+     **************************************************************************************************************** */
+
     private final Set<E> protectedSet;
+
+    /* *****************************************************************************************************************
+     * Constructor(s)
+     **************************************************************************************************************** */
 
     private ImmutableSet(Set<E> protectedSet) {
         this.protectedSet = protectedSet;
     }
+
+    /* *****************************************************************************************************************
+     * Implementation of Set<E>
+     **************************************************************************************************************** */
 
     @Override
     public int size() {
@@ -46,6 +64,11 @@ public class ImmutableSet<E> implements Set<E> {
     }
 
     @Override
+    public boolean containsAll(Collection<?> c) {
+        return protectedSet.containsAll(c);
+    }
+
+    @Override
     public boolean add(E e) {
         throw new UnsupportedOperationException("You must not add an element to this Set");
     }
@@ -53,11 +76,6 @@ public class ImmutableSet<E> implements Set<E> {
     @Override
     public boolean remove(Object o) {
         throw new UnsupportedOperationException("You must not remove an element from this Set");
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return protectedSet.containsAll(c);
     }
 
     @Override
@@ -80,17 +98,21 @@ public class ImmutableSet<E> implements Set<E> {
         throw new UnsupportedOperationException("You must not clear this Set");
     }
 
+    /* *****************************************************************************************************************
+     * Overrides of Object
+     **************************************************************************************************************** */
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null) return false;
 
-        if(getClass() == o.getClass()) {
+        if (getClass() == o.getClass()) {
             ImmutableSet<?> that = (ImmutableSet<?>) o;
             return protectedSet.equals(that.protectedSet);
         }
 
-        if(o instanceof Set) {
+        if (o instanceof Set) {
             return protectedSet.equals(o);
         }
 
@@ -107,9 +129,12 @@ public class ImmutableSet<E> implements Set<E> {
         return protectedSet.toString();
     }
 
+    /* *****************************************************************************************************************
+     * Factory methods
+     **************************************************************************************************************** */
+
     public static <T> Set<T> empty() {
-        Set<T> hashSet = new HashSet<>(0);
-        return new ImmutableSet<>(hashSet);
+        return EMPTY_IMMUTABLE_SET;
     }
 
     @SafeVarargs
@@ -140,7 +165,7 @@ public class ImmutableSet<E> implements Set<E> {
     public static <T> Set<T> of(Iterator<T> items) {
         HashSet<T> hashSet = new HashSet<>();
 
-        while(items.hasNext()) {
+        while (items.hasNext()) {
             T item = items.next();
             hashSet.add(item);
         }
@@ -161,6 +186,10 @@ public class ImmutableSet<E> implements Set<E> {
     public static <T> Collector<T, Set<T>, Set<T>> collect() {
         return new ImmutableSetCollector<>();
     }
+
+    /* *****************************************************************************************************************
+     * Inner class(es)
+     **************************************************************************************************************** */
 
     private static class ImmutableSetCollector<T> implements Collector<T, Set<T>, Set<T>> {
         @Override
