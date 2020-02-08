@@ -228,7 +228,7 @@ public class ImmutableMap<K, V> implements Map<K, V> {
      * @return a new anonymous instance of an {@link Map.Entry}
      */
     public static <K, V> Map.Entry<K, V> entry(K key, V value) {
-        return new Map.Entry<>() {
+        return new Map.Entry<K, V>() {
 
             @Override
             public K getKey() {
