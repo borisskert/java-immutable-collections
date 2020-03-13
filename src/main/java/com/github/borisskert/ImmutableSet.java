@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 /**
  * Implements an unmodifiable {@link Set}
+ * Attention: Works internal with a {@link HashSet} implementation.
  *
  * @param <E> the item type
  */

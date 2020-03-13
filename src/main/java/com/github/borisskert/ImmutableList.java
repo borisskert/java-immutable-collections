@@ -6,9 +6,11 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Stream;
 
 /**
  * Implements an unmodifiable {@link List}
+ * Attention: Works internal with an {@link ArrayList} implementation.
  *
  * @param <E> the type of the elements
  */
@@ -181,11 +183,25 @@ public class ImmutableList<E> implements List<E> {
      * Factory methods
      **************************************************************************************************************** */
 
+    /**
+     * Returns an empty instance of an {@link ImmutableList}
+     *
+     * @param <T> the item type
+     * @return an empty instance (not a new one)
+     */
     @SuppressWarnings("unchecked")
     public static <T> List<T> empty() {
         return EMPTY_IMMUTABLE_LIST;
     }
 
+    /**
+     * Creates an immutable {@link List} containing the specified items
+     *
+     * @param item   the first item
+     * @param others the other optional items
+     * @param <T>    the item type
+     * @return a new instance of an {@link ImmutableList}
+     */
     @SafeVarargs
     public static <T> List<T> of(T item, final T... others) {
         Objects.requireNonNull(item, "Parameter 'item' must not be null");
@@ -197,6 +213,13 @@ public class ImmutableList<E> implements List<E> {
         return new ImmutableList<>(arrayList);
     }
 
+    /**
+     * Creates an immutable {@link List} containing all items of the specified array (in same order)
+     *
+     * @param items the specified array
+     * @param <T>   the item type
+     * @return a new instance of an {@link ImmutableList}
+     */
     public static <T> List<T> of(T[] items) {
         Objects.requireNonNull(items, "Parameter 'items' must not be null");
 
@@ -206,6 +229,13 @@ public class ImmutableList<E> implements List<E> {
         return new ImmutableList<>(arrayList);
     }
 
+    /**
+     * Creates an immutable {@link List} containing all items of the specified {@link Collection}
+     *
+     * @param items the specified {@link Collection} containing the items
+     * @param <T>   the item type
+     * @return a new instance of an {@link ImmutableList}
+     */
     public static <T> List<T> of(Collection<T> items) {
         Objects.requireNonNull(items, "Parameter 'items' must not be null");
 
@@ -215,6 +245,13 @@ public class ImmutableList<E> implements List<E> {
         return new ImmutableList<>(arrayList);
     }
 
+    /**
+     * Creates an immutable {@link List} containing all items of the specified {@link Iterable}
+     *
+     * @param items the {@link Iterable} contaning the items
+     * @param <T>   the item type
+     * @return a new instance of an {@link ImmutableList}
+     */
     public static <T> List<T> of(Iterable<T> items) {
         Objects.requireNonNull(items, "Parameter 'items' must not be null");
 
@@ -227,6 +264,12 @@ public class ImmutableList<E> implements List<E> {
         return new ImmutableList<>(arrayList);
     }
 
+    /**
+     * Provides a {@link Collector} to collect a {@link Stream} to an immutable {@link List}
+     *
+     * @param <T> the item type
+     * @return a new instance of an {@link Collector}
+     */
     public static <T> Collector<T, List<T>, List<T>> collect() {
         return new ImmutableListCollector<T>();
     }
